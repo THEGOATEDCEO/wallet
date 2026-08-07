@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="hero-card">
+    <div class="hero-copy">
+        <p class="eyebrow">PerkMint.com</p>
+        <h1>Send PERKS instantly with confidence.</h1>
+        <div class="price-banner">Current PERKS Price: ₹{{ wallet_settings.perk_price }} per PERK</div>
+        <p>Manage balances, track transfers, and keep your finances in one secure place.</p>
+        <div class="button-row">
+            <a class="btn btn-primary" href="{{ url_for('register') }}">Create account</a>
+            <a class="btn btn-secondary" href="{{ url_for('login') }}">Log in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

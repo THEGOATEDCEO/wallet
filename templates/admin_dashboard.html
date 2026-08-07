@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card notification-card">
+    <h2>🔔 New Purchase Requests</h2>
+    {% if pending_requests %}
+        <p><strong>Pending Requests:</strong> {{ pending_requests|length }}</p>
+        <a class="btn btn-secondary" href="{{ url_for('admin_purchase_requests') }}">Open Purchase Requests</a>
+    {% else %}
+        <p>No pending purchase requests.</p>
+    {% endif %}
+</div>
+
+<div class="card">
+    <h2>PERKS Price Management</h2>
+    <p><strong>Current Price:</strong> ₹{{ wallet_settings.perk_price }}</p>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.perk_price.label }}
+            {{ form.perk_price(class_='input') }}
+            {% if form.perk_price.errors %}
+                <div class="alert alert-danger">{{ form.perk_price.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <button class="btn btn-primary" type="submit">Update Price</button>
+    </form>
+</div>
+
+<div class="card">
+    <h2>Mining Submissions</h2>
+    <p><strong>Pending Mining Submissions:</strong> {{ pending_mining|length }}</p>
+    <a class="btn btn-secondary" href="{{ url_for('admin_mining') }}">Open Mining Submissions</a>
+    <p style="margin-top: .6rem;"><strong>Treasury:</strong> {{ treasury.available_perks }} PERKS</p>
+</div>
+
+<div class="card">
+    <h2>Recent Sell Orders</h2>
+    {% if recent_sales %}
+        <ul class="list">
+            {% for sale in recent_sales %}
+                <li>
+                    <strong>{{ sale.user.username }}</strong> sold {{ sale.amount }} PERKS
+                    <span>Value: ₹{{ sale.total_value }} | Status: {{ sale.status }}</span>
+                    <span>{{ sale.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No sell orders yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

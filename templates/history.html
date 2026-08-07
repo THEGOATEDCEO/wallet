@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Transaction history</h2>
+    {% if transactions %}
+        <ul class="list">
+            {% for tx in transactions %}
+                <li>
+                    <strong>{{ tx.amount }} PERKS</strong>
+                    <span>from {{ tx.sender.username }} to {{ tx.receiver.username }}</span>
+                    <span>{{ tx.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No transactions to display.</p>
+    {% endif %}
+</div>
+{% endblock %}

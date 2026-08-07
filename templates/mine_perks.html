@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-grid">
+    <section class="card hero-card">
+        <p class="eyebrow">Proof of Work</p>
+        <h2>Mine PERKS</h2>
+        <p><strong>Mining Rules</strong></p>
+        <ul>
+            <li>Submit a 15-digit nonce.</li>
+            <li>The server hashes: <strong>nonce + username + current balance</strong>.</li>
+            <li>A valid solution must begin with <strong>00000000</strong>.</li>
+            <li>Successful submissions are reviewed by the administrator.</li>
+        </ul>
+        <div class="price-banner">Current Reward: 20 PERKS</div>
+        <div class="price-banner">Current Difficulty: Hash must begin with 00000000</div>
+    </section>
+
+    <section class="card">
+        <h3>I GOT IT</h3>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.nonce.label }}
+                {{ form.nonce(class_='input', maxlength=15) }}
+                {% if form.nonce.errors %}
+                    <div class="alert alert-danger">{{ form.nonce.errors[0] }}</div>
+                {% endif %}
+            </div>
+            <button class="btn btn-primary" type="submit">Submit Mining Challenge</button>
+        </form>
+    </section>
+</div>
+{% endblock %}

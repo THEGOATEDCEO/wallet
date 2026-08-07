@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Send PERKS</h2>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.recipient.label }}
+            {{ form.recipient(class_='input') }}
+        </div>
+        <div class="form-group">
+            {{ form.amount.label }}
+            {{ form.amount(class_='input') }}
+        </div>
+        <button class="btn btn-primary" type="submit">Send</button>
+    </form>
+</div>
+{% endblock %}

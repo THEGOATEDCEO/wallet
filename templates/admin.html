@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Admin panel</h2>
+    <form class="search-form" method="get">
+        {{ search_form.query.label }}
+        {{ search_form.query(class_='input') }}
+        <button class="btn btn-secondary" type="submit">Search</button>
+    </form>
+
+    <h3>Users</h3>
+    <ul class="list">
+        {% for user in users %}
+            <li class="admin-user-row">
+                <div>
+                    <strong>{{ user.username }}</strong>
+                    {% if current_user.is_authenticated and current_user.is_admin %}
+                        <div>Email: {{ user.email }}</div>
+                    {% else %}
+                        <div>Email: <em>Hidden</em></div>
+                    {% endif %}
+                    <div>Balance: {{ user.balance }}</div>
+                </div>
+                <div class="row-actions">
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+                        <input type="hidden" name="action" value="add">
+                        <input type="hidden" name="target_user_id" value="{{ user.id }}">
+                        <input type="number" name="amount" min="1" value="10" class="input compact">
+                        <button class="btn btn-secondary" type="submit">Add</button>
+                    </form>
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+                        <input type="hidden" name="action" value="remove">
+                        <input type="hidden" name="target_user_id" value="{{ user.id }}">
+                        <input type="number" name="amount" min="1" value="10" class="input compact">
+                        <button class="btn btn-danger" type="submit">Remove</button>
+                    </form>
+                    <form method="post">
+                        {{ form.hidden_tag() }}
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="target_user_id" value="{{ user.id }}">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h3>Transactions</h3>
+    {% if transactions %}
+        <ul class="list">
+            {% for tx in transactions %}
+                <li>
+                    <strong>{{ tx.amount }} PERKS</strong>
+                    <span>from {{ tx.sender.username }} to {{ tx.receiver.username }}</span>
+                    <span>{{ tx.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No transactions recorded.</p>
+    {% endif %}
+</div>
+{% endblock %}

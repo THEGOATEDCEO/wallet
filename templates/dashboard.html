@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-grid">
+    <section class="card hero-card dashboard-card">
+        <p class="eyebrow">Welcome back</p>
+        <div class="price-banner">Current PERKS Price: ₹{{ wallet_settings.perk_price }} per PERK</div>
+        <h2>{{ user.username }}</h2>
+        <p>Your current balance</p>
+        <div class="balance-pill">{{ user.balance }} PERKS</div>
+        <div class="button-row">
+            <a class="btn btn-primary" href="{{ url_for('send_perks') }}">Send PERKS</a>
+            <a class="btn btn-secondary" href="{{ url_for('history') }}">History</a>
+            <a class="btn btn-secondary" href="{{ url_for('buy_perks') }}">Buy PERKS</a>
+            <a class="btn btn-secondary" href="{{ url_for('sell_perks') }}">Sell PERKS</a>
+            <a class="btn btn-secondary" href="{{ url_for('profile') }}">Profile</a>
+        </div>
+    </section>
+
+    <section class="card">
+        <h3>Your purchase requests</h3>
+        {% if purchase_requests %}
+            <ul class="list">
+                {% for request in purchase_requests %}
+                    <li>
+                        <strong>{{ request.requested_perks }} PERKS</strong>
+                        <span>Total: ₹{{ request.total_price }} | Status: {{ request.status }}</span>
+                        <span>{{ request.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No purchase requests yet.</p>
+        {% endif %}
+    </section>
+
+    <section class="card">
+        <h3>Recent transactions</h3>
+        {% if transactions %}
+            <ul class="list">
+                {% for tx in transactions %}
+                    <li>
+                        {% if tx.sender_id == user.id %}
+                            Sent {{ tx.amount }} to {{ tx.receiver.username }}
+                        {% else %}
+                            Received {{ tx.amount }} from {{ tx.sender.username }}
+                        {% endif %}
+                        <span>{{ tx.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No transactions yet.</p>
+        {% endif %}
+    </section>
+    
+    <section class="card">
+        <h3>Mining</h3>
+        <p><strong>Current Treasury Supply:</strong> {{ treasury.available_perks }} PERKS</p>
+        <p><strong>Mining Reward:</strong> 20 PERKS</p>
+        <a class="btn btn-secondary" href="{{ url_for('mine') }}">Mine PERKS</a>
+
+        <h4 style="margin-top:1rem;">My Mining Submissions</h4>
+        {% if mining_submissions %}
+            <ul class="list">
+                {% for s in mining_submissions %}
+                    <li>
+                        <strong>Nonce:</strong> {{ s.nonce }} — <span>Status: {{ s.status }}</span>
+                        <span>{{ s.submitted_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No mining submissions yet.</p>
+        {% endif %}
+    </section>
+</div>
+{% endblock %}

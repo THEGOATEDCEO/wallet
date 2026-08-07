@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Mining Submissions</h2>
+    {% if submissions %}
+        <div class="table-list">
+            {% for submission in submissions %}
+                <div class="table-row">
+                    <div>
+                        <strong>{{ submission.user.username }}</strong><br>
+                        <span>Nonce: {{ submission.nonce }}</span><br>
+                        <span>Hash: {{ submission.hash }}</span><br>
+                        <span>Reward: {{ submission.reward }} | Status: {{ submission.status }}</span>
+                    </div>
+                    <div class="row-actions">
+                        {% if submission.status == 'Pending' %}
+                            <form method="post" action="{{ url_for('manage_mining_submission', submission_id=submission.id, action='award') }}">
+                                <button class="btn btn-primary" type="submit">Award</button>
+                            </form>
+                            <form method="post" action="{{ url_for('manage_mining_submission', submission_id=submission.id, action='reject') }}">
+                                <button class="btn btn-danger" type="submit">Reject</button>
+                            </form>
+                        {% else %}
+                            <span>{{ submission.status }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No mining submissions yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

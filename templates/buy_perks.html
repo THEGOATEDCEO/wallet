@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" data-perk-rate="{{ settings.perk_price }}">
+    <h2>Buy PERKS</h2>
+    <p>Current price: 1 PERK = ₹{{ wallet_settings.perk_price }}</p>
+    <form method="post" id="buy-perks-form">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.requested_perks.label }}
+            {{ form.requested_perks(class_='input', id='requested_perks') }}
+        </div>
+        <div class="purchase-preview" id="purchase-preview">
+            <div><strong>Requested PERKS:</strong> <span id="display-perks">0</span></div>
+            <div><strong>Rate:</strong> ₹{{ wallet_settings.perk_price }}</div>
+            <div><strong>Total Cost:</strong> ₹<span id="display-total">0</span></div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit Purchase Request</button>
+    </form>
+</div>
+{% endblock %}

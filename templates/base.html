@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PerkMint.com</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body data-perk-rate="{{ wallet_settings.perk_price }}">
+    <div class="background-glow glow-1"></div>
+    <div class="background-glow glow-2"></div>
+
+    <nav class="navbar">
+        <div class="nav-brand-group">
+            <a class="brand" href="{{ url_for('index') }}">PerkMint.com</a>
+            <span class="nav-price" data-live-price>💰 1 PERK = ₹{{ wallet_settings.perk_price }}</span>
+        </div>
+        <div class="nav-links">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('history') }}">History</a>
+                <a href="{{ url_for('send_perks') }}">Send</a>
+                <a href="{{ url_for('buy_perks') }}">Buy PERKS</a>
+                {% if current_user.is_admin %}<a href="{{ url_for('admin') }}">Admin</a>{% endif %}
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

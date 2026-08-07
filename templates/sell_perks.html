@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Sell PERKS</h2>
+    <p><strong>Current price:</strong> ₹{{ settings.perk_price }} per PERK</p>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.amount.label }}
+            {{ form.amount(class_='input') }}
+            {% if form.amount.errors %}
+                <div class="alert alert-danger">{{ form.amount.errors[0] }}</div>
+            {% endif %}
+        </div>
+        <button class="btn btn-primary" type="submit">Submit Sale</button>
+    </form>
+</div>
+{% endblock %}
